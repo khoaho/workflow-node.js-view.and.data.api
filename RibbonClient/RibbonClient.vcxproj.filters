@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <None Include="index.html">
+      <Filter>HTML</Filter>
+    </None>
+    <None Include="js\viewer.js">
+      <Filter>JS</Filter>
+    </None>
+    <None Include="css\layout-default.css">
+      <Filter>CSS</Filter>
+    </None>
+    <None Include="css\ribbon.css">
+      <Filter>CSS</Filter>
+    </None>
+    <None Include="css\viewer_scoped.css">
+      <Filter>CSS</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="HTML">
+      <UniqueIdentifier>{679f2b5f-4839-4bda-bbd5-cde75deac39b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="JS">
+      <UniqueIdentifier>{0bf83111-cbdd-4fdf-a57c-655ed3ee66e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CSS">
+      <UniqueIdentifier>{0c5e27e8-aab5-4509-b6bc-7f9ab8214bec}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,376 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=8" />
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+    <title>NodeView Ribbon Demo</title>
+
+   
+    <link type="text/css" rel="Stylesheet" href="js/jsTree/themes/default/style.min.css" />
+    <link type="text/css" rel="stylesheet" href="css/layout-default.css" />
+    <link type="text/css" rel="stylesheet" href="css/ribbon.css" />
+    
+
+	<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+	<script type="text/javascript" src="js/layout/jquery-ui.js"></script>
+	<script type="text/javascript" src="js/layout/jquery.layout.js"></script>
+    <script type="text/javascript" src="js/jquery.ribbon.js" ></script>
+    <script type="text/javascript" src="js/jsTree/jstree.min.js"></script>
+
+    <link type="text/css" rel="stylesheet" href="css/viewer_scoped.css"/>
+
+    <!--script type="text/javascript" src="https://viewing.api.autodesk.com/viewingservice/v1/viewers/viewer3D.min.js"></script-->
+
+    <script  type="text/javascript" src="https://developer-stg.api.autodesk.com/viewingservice/v1/viewers/viewer3D.min.js"></script>
+
+    <script type="text/javascript" src="js/viewer.js"></script>
+
+    <style type="text/css">
+        .ui-layout-element {  
+           background-color: #DCE5F2;
+         } 
+    </style>
+
+</head>
+
+
+
+<script type="text/javascript">
+
+
+    $().ready(function () {
+
+        initializeRibbon();
+
+        initializeLayout();
+
+        initializeViewer();
+
+        clearConsole();
+
+        appendText("> Welcome! more stuff will be written here ...");
+    });
+
+    ///////////////////////////////////////////////////////////////////////////
+    //
+    //
+    ///////////////////////////////////////////////////////////////////////////
+    function initializeRibbon() {
+
+        try {
+            $('ul.ribbon-theme li').click(function () {
+                $().Ribbon({ theme: $(this).attr('class').substring(7) });
+            });
+
+            $('#idZoomFit').click(function () {
+                fitToWindow();
+            });
+
+            $('#idLoadModel').click(function () {
+                alert("TODO: Load Model");
+            });
+
+            $('#idUploadModel').click(function () {
+                alert("TODO: Upload Model");
+            });
+
+            $('#urn').keydown(function (e) {
+                if (e.keyCode === 13 && this.value !== '') {
+
+                    clearCurrentModel();
+
+                    _viewer = createViewer();
+
+                    loadDocument(_auth, _viewer, this.value);
+                }
+            });
+
+            $().Ribbon({ theme: 'windows7' });
+        }
+        catch(err) {
+            
+        }
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    //
+    //
+    ///////////////////////////////////////////////////////////////////////////
+    function initializeLayout() {
+
+        var layout = $('#inner').layout({
+
+            applyDefaultStyles: true,
+
+            south__initHidden: false,
+            south__resizable: true,
+
+            west__initHidden: false,
+            west__resizable: true,
+
+            west__size: 300,
+            south__size: 150,
+
+            center__onresize: function () {
+                _viewer.resize();
+            }
+        });
+
+        //Browser
+        if ($('#idCheckboxBrowser').prop('checked')) {
+            layout.show('west');
+        }
+        else {
+            layout.hide('west');
+        }
+       
+        $('#idCheckboxBrowser').change(function () {
+            if ($('#idCheckboxBrowser').prop('checked')) {
+                layout.show('west');
+            }
+            else {
+                layout.hide('west');
+            }
+        });
+
+        //Console
+        if ($('#idCheckboxConsole').prop('checked')) {
+            layout.show('south');
+        }
+        else {
+            layout.hide('south');
+        }
+
+        $('#idCheckboxConsole').change(function () {
+            if ($('#idCheckboxConsole').prop('checked')) {
+                layout.show('south');
+            }
+            else {
+                layout.hide('south');
+            }
+        });
+
+        return layout;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    //
+    //
+    ///////////////////////////////////////////////////////////////////////////
+
+    function clearConsole() {
+        var console = $('#idConsole')
+        console.val("");
+    };
+
+    function appendText(text) {
+
+        var console = $('#idConsole')
+        console.val(console.val() + text);
+    };
+
+</script>
+
+<body style="min-height:100%; height:100%;">
+
+    <div class="mainContainer" id="idRibbon" style="z-index:10; display:normal">
+        <ul class="ribbon">
+
+            <li>
+                <ul class="orb">
+                    <li><a href="javascript:void(0);" accesskey="1" class="orbButton">&nbsp;</a><span>Menu</span>
+                        <ul>
+                            <li><a href="#">
+                                <img src="ribbon/images/icon_doc.png" alt="New" /><span>New</span></a> </li>
+                            <li><a href="#">
+                                <img src="ribbon/images/icon_open.png" alt="Open" /><span>Open</span></a> </li>
+                            <li><a href="#">
+                                <img src="ribbon/images/icon_save.png" alt="Save" /><span>Save</span></a> </li>
+                            <li><a href="#">
+                                <img src="ribbon/images/icon_saveas.png" alt="Save as" /><span>Save As</span></a>
+                                <ul>
+                                    <li><a href="#">
+                                        <img src="ribbon/images/icon_richtext.png" alt="Rich Text" /><span>Rich Text document</span></a>
+                                    </li>
+                                    <li><a href="#">
+                                        <img src="ribbon/images/icon_ooxml.png" alt="OOXML" /><span>Office Open XML document</span></a>
+                                    </li>
+                                    <li><a href="#">
+                                        <img src="ribbon/images/icon_ooxml.png" alt="Open Document" /><span>OpenDocument text</span></a>
+                                    </li>
+                                    <li><a href="#">
+                                        <img src="ribbon/images/icon_plaintext.png" alt="Plain text" /><span>Plain text document</span></a>
+                                    </li>
+                                    <li><a href="#">
+                                        <img src="ribbon/images/icon_otherformats.png" alt="Other formats" /><span>Other formats</span></a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li><a href="#">
+                                <img src="ribbon/images/icon_print.png" alt="Print" /><span>Print</span></a>
+                                <ul>
+                                    <li><a href="#">
+                                        <img src="ribbon/images/icon_print.png" alt="Print" /><span>Print</span></a>
+                                    </li>
+                                    <li><a href="#">
+                                        <img src="ribbon/images/icon_quickprint.png" alt="Quick print" /><span>Quick print</span></a>
+                                    </li>
+                                    <li><a href="#">
+                                        <img src="ribbon/images/icon_printpreview.png" alt="Print preview" /><span>Print preview</span></a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a href="#">
+                                <img src="ribbon/images/icon_pagesetup.png" alt="Page setup" /><span>Page setup</span></a>
+                            </li>
+                            <li><a href="#">
+                                <img src="ribbon/images/icon_sendemail.png" alt="Send in e-mail" /><span>Send in e-mail</span></a>
+                            </li>
+                            <li><a href="#">
+                                <img src="ribbon/images/icon_about.png" alt="About" /><span>About</span></a>
+                            </li>
+                            <li><a href="#">
+                                <img src="ribbon/images/icon_exit.png" alt="Exit" /><span>Exit</span></a> </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+
+            <li>
+                <ul class="menu">
+
+                    <li><a href="#home" accesskey="2">Home</a>
+                        <ul>
+
+                            <li>
+                                <h2>
+                                    <span>Models</span></h2>
+                                <div>
+                                    <img id="idLoadModel" src="ribbon/images/icon_paste.png" alt="Paste" />
+                                    Load
+                                </div>
+
+                                <div>
+                                    <img id="idUploadModel" src="ribbon/images/icon_paste.png" alt="Paste" />
+                                    Upload
+                                </div>
+
+                                <div class="ribbon-list">
+                                    
+                                    <div>
+                                        <input id="urn" 
+                                        type="text" 
+                                        style="height:15px; width:220px; font-family:sans-serif;"
+                                        placeholder=" > Load Model from URN"/>
+                                    </div>
+
+                                </div>
+                                
+                            </li>
+
+                        </ul>
+                    </li>
+
+                    <li><a href="#view" accesskey="3">View</a>
+                        <ul>
+                            <li>
+                                <h2>
+                                    Zoom</h2>
+                                <div>
+                                    <img src="ribbon/images/icon_zoomin.png" alt="Zoom in" />
+                                    Zoom in
+                                </div>
+                                <div>
+                                    <img src="ribbon/images/icon_zoomout.png" alt="Zoom out" />
+                                    Zoom out
+                                </div>
+                                <div>
+                                    <img id="idZoomFit" src="ribbon/images/icon_zoom100.png" alt="Zoom" />
+                                    100%
+                                </div>
+                            </li>
+
+                            <li>
+                                <h2>
+                                    Show or hide</h2>
+                                <div class="ribbon-list">
+                                    <div>
+                                        <input type="checkbox" id="idCheckboxBrowser" checked="checked"/>
+                                        <label accesskey="b" for="idCheckboxBrowser">
+                                            Browser
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" id="idCheckboxConsole" checked="checked"/>
+                                        <label accesskey="c" for="idCheckboxConsole">
+                                            Console
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" id="idCheckboxStatus" />
+                                        <label accesskey="s" for="idCheckboxStatus">
+                                            Status bar
+                                        </label>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li>
+                                <h2>
+                                    Theme</h2>
+                                <div class="ribbon-list">
+                                    <div>
+                                        <img src="ribbon/images/icon_small_theme.png" alt="Theme" />
+                                        Ribbon theme
+                                        <ul class="ribbon-theme">
+                                            <li class="ribbon-windows7">Windows 7</li>
+                                            <li class="ribbon-simple">Simple</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+
+                        </ul>
+                    </li>
+
+                 <li><a href="#search" accesskey="3">Search</a>
+                        <ul>
+
+                            
+                        </ul>
+                </li>
+
+                </ul>
+            </li>
+        </ul>
+    </div>
+    
+  
+     <div class="ui-layout-center" id="inner" style="height:100%;">
+
+        <div class="ui-layout-center">
+        
+            <div id="ViewerDiv" style="height:100%;" class="ui-layout-element">
+           
+            </div>
+               
+        </div>
+
+        <div id="paneWest" class="ui-layout-west">   
+               
+            <div id="jstree" class="ui-layout-element" style="height:100%; width:100%;">
+            </div>
+
+        </div>
+
+          <div id="paneSouth" class="ui-layout-south"> 
+            <div class="ui-layout-element" style="height:100%; width:100%;">  
+                <textarea id="idConsole" readonly="readonly" style="width:100%; height:100%; resize:none"></textarea> 
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

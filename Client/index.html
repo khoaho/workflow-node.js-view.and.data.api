@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+    <link rel="stylesheet" href="https://viewing.api.autodesk.com/viewingservice/v1/viewers/style.css" type="text/css">
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js">
+    </script>
+
+    <script type="text/javascript" src="https://viewing.api.autodesk.com/viewingservice/v1/viewers/viewer3D.min.js"></script> 
+
+    <script type="text/javascript" src="./js/layout/jquery.ui.js"></script>
+    <script type="text/javascript" src="./js/layout/jquery.layout.js"></script>
+    <script type="text/javascript" src="./js/viewer.js"></script>
+
+<script>
+
+    $(document).ready(function () {
+
+        $('body').layout({
+            applyDefaultStyles: true
+        });
+
+        $('#inner').layout({
+            applyDefaultStyles: true,
+
+            north__resizable: false,
+
+            center__onresize: function () {
+                _viewer.resize();
+            }
+        });
+
+        initialize();
+
+        // disable default context menu on viewer div 
+        $('#viewerElement').on('contextmenu', function (e) {
+            e.preventDefault();
+        });
+
+        // disable scrolling on DOM document 
+        // while mouse pointer is over viewer area
+        $('#viewerElement').hover(
+            function () {
+                var x = window.scrollX;
+                var y = window.scrollY;
+                window.onscroll = function () {
+                    window.scrollTo(x, y);
+                };
+            },
+            function () {
+                window.onscroll = null;
+            }
+        );
+    });
+
+</script>
+ 
+    <style type="text/css">
+
+	    .ui-layout-pane { /* all 'panes' */ 
+		    background: #FFF; 
+		    border: 1px solid #BBB; 
+		    padding: 10px; 
+		    overflow: auto;
+	    } 
+
+	    .ui-layout-resizer { /* all 'resizer-bars' */ 
+		    background: #DDD; 
+	    } 
+
+	    .ui-layout-toggler { /* all 'toggler-buttons' */ 
+		    background: #AAA; 
+	    } 
+
+    </style>
+</head>
+
+<body>
+    <div class="ui-layout-center" id="inner">
+
+        <div class="ui-layout-north">
+            
+           <b>Select Model:</b>
+            <br/>
+            <select id="combo"
+                name="combo" 
+                onchange="onModelSelected()" 
+                style="height:20px; width:99%; font-family:sans-serif;">
+            </select>
+
+        </div>
+
+         <div class="ui-layout-center">
+        
+            <div id="viewerElement" style="height:100%;">
+           
+            </div>
+               
+        </div>
+
+    </div>
+
+</body>
+</html>
