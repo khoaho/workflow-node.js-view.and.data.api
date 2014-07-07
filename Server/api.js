@@ -17,13 +17,9 @@
 // UNINTERRUPTED OR ERROR FREE.
 /////////////////////////////////////////////////////////////////////////////////
 
-var CONSUMER_KEY = "tAp1fqjjtcgqS4CKpCYDjAyNbKW4IVCC";
-var CONSUMER_SECRET = "q2LwUFg3MrYngc8l";
+var CONSUMER_KEY = "****** place holder - replace with your creds ******";
+var CONSUMER_SECRET = "****** place holder - replace with your creds ******";
 var BASE_URL = "https://developer.api.autodesk.com";
-
-//var CONSUMER_KEY = "****** place holder - replace with your creds ******";
-//var CONSUMER_SECRET = "****** place holder - replace with your creds ******";
-//var BASE_URL = "https://developer.api.autodesk.com";
 
 var request = require('request');
 var mongo = require('mongodb');
