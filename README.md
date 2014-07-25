@@ -18,7 +18,6 @@ None
 
 ##Setup/Usage Instructions
 
-*TODO*
 
 * Install Node.js
 * Run "npm install" command from the server directory
