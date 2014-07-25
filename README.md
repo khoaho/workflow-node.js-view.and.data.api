@@ -18,11 +18,17 @@ None
 
 ##Setup/Usage Instructions
 
-See the sample README.md file in the sample folders.
+*TODO*
+
+*Install Node.js
+*Run "npm install" command from the server directory
+*Install and run MongoDb first, from MongoDb bin folder run "mongod.exe --dbpath %path-to-your-db%" command
+*Run the server, click "run server.bat" or from the command line: "node .\server.js"
+
 
 ## License
 
-client-embedded-view.and.data.api is licensed under the terms of the [MIT License](http://opensource.org/licenses/MIT). Please see the [LICENSE](LICENSE) file for full details.
+These samples are licensed under the terms of the [MIT License](http://opensource.org/licenses/MIT). Please see the [LICENSE](LICENSE) file for full details.
 
 ##Written by 
 
